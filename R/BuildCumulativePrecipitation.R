@@ -5,7 +5,7 @@ library(dplyr)
 library(lubridate)
 library(stringr)
 
-ghcn <- read_csv("data/GHCN_USW00014839.csv") |>
+ghcn <- read_csv("data/GHCN_FR000007510.csv") |>
   group_by(year) |>
   arrange(day_of_year) |>
   mutate(cum_precip = cumsum(PRCP)) |>
@@ -61,7 +61,7 @@ today.vs.median <- this.year |>
   inner_join(daily.summary.stats |> 
                select(day_of_year, x50))
 median.annotation <- paste("As of", format(last.date, "%B %d, %Y,"),
-                           "Milwaukee has received", round(today.vs.median$cum_precip, 1), 
+                           "Bordeaux has received", round(today.vs.median$cum_precip, 1), 
                            "cumulative inches of rain, year-to-date,",
                            "compared with a median of", round(today.vs.median$x50, 1),
                            "in years since 1939.")
@@ -104,7 +104,7 @@ cum.precip.graph <- daily.summary.stats |>
                      breaks = month.breaks$day_of_year + 15,
                      labels = month.breaks$month_name,
                      name = NULL) +
-  labs(title = "Cumulative annual precipitation at Milwaukee's Mitchell Airport",
+  labs(title = "Cumulative annual precipitation at Bordeaux Mérignac Airport",
        subtitle = paste("The line shows precipitation for",
                         paste0(lubridate::year(last.date), "."),
                         "The ribbons cover the",
@@ -126,5 +126,5 @@ cum.precip.graph <- daily.summary.stats |>
 
 cum.precip.graph
 
-ggsave("graphs/AnnualCumulativePrecipitation_USW00014839.png", plot = cum.precip.graph,
+ggsave("graphs/AnnualCumulativePrecipitation_FR000007510.png", plot = cum.precip.graph,
        width = 8, height = 4)
